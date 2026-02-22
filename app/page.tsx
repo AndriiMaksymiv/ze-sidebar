@@ -1,7 +1,9 @@
+import Sidebar from '@/components/sidebar/sidebar';
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      <h2>content</h2>
+    <main className="flex h-screen flex-col items-center justify-center">
+      <Sidebar />
     </main>
   );
 }
