@@ -1,19 +1,17 @@
 'use client';
 
-import { useState } from 'react';
-
 import { Button } from '@/components/ui/button';
 import { Drawer, DrawerClose, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle, DrawerTrigger } from '@/components/ui/drawer';
 import { ImageIcon, X } from 'lucide-react';
 
+import { useSidebarStore } from '@/lib/stores/sidebar-store';
 import { BackgroundPromptForm } from './background-prompt-form';
 import BackgroundsGridEmpty from './backgrounds-grid--empty';
 import { BackgroundsGrid } from './backgrounds-grid';
-import { BackgroundItem } from '@/types/sidebar-types';
 
 export default function Sidebar() {
-  const [items, setItems] = useState<BackgroundItem[]>([]);
-  const [activeItemId, setActiveItemId] = useState<string | null>(null);
+  const items = useSidebarStore((s) => s.items);
+
   return (
     <Drawer direction="right">
       <DrawerTrigger asChild>
@@ -36,9 +34,9 @@ export default function Sidebar() {
           </DrawerClose>
         </DrawerHeader>
 
-        <BackgroundPromptForm items={items} setItems={setItems} setActiveItemId={setActiveItemId} />
+        <BackgroundPromptForm />
 
-        {items.length > 0 && <BackgroundsGrid items={items} activeItemId={activeItemId} onSelect={setActiveItemId} />}
+        {items.length > 0 && <BackgroundsGrid />}
 
         {items.length === 0 && <BackgroundsGridEmpty />}
       </DrawerContent>

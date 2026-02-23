@@ -1,7 +1,5 @@
 'use client';
 
-import { useState } from 'react';
-import { useFormStatus } from 'react-dom';
 import Image from 'next/image';
 import { Redo2, Undo2 } from 'lucide-react';
 
@@ -9,13 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 
 import { submitBackgroundPrompt } from '../../lib/actions/sidebar-actions';
-import { BackgroundItem, BackgroundPromptFormProps, BackgroundPromptState } from '@/types/sidebar-types';
+import { useSidebarStore } from '@/lib/stores/sidebar-store';
+import { BackgroundItem } from '@/types/sidebar-types';
 
-export function BackgroundPromptForm({ items, setItems, setActiveItemId }: BackgroundPromptFormProps) {
-  const [promptState, setPromptState] = useState<BackgroundPromptState>({
-    status: 'idle',
-  });
-  const { pending } = useFormStatus();
+export function BackgroundPromptForm() {
+  const { items, promptState, setPromptState, addItem, setActiveItemId, markItemLoaded } = useSidebarStore();
 
   async function handleSubmit(formData: FormData) {
     const nextState = await submitBackgroundPrompt(promptState, formData);
@@ -27,12 +23,12 @@ export function BackgroundPromptForm({ items, setItems, setActiveItemId }: Backg
 
     const nextItem: BackgroundItem = { id: nextState.submissionId, loading: true };
 
-    setItems((previousItems) => [nextItem, ...previousItems]);
+    addItem(nextItem);
     setActiveItemId((previousActiveItemId) => (items.length === 0 ? nextItem.id : (previousActiveItemId ?? nextItem.id)));
 
     // Simulate loading state for the new background item
     setTimeout(() => {
-      setItems((previousItems) => previousItems.map((item) => (item.id === nextItem.id ? { ...item, loading: false } : item)));
+      markItemLoaded(nextItem.id);
     }, 5000);
   }
 
@@ -66,11 +62,11 @@ export function BackgroundPromptForm({ items, setItems, setActiveItemId }: Backg
           </div>
         </div>
 
-        <Button type="submit" className="w-full font-semibold" size="lg" disabled={pending}>
+        <Button type="submit" className="w-full font-semibold" size="lg">
           <div className="relative w-4 h-4">
             <Image src="/icons/ai-stars--bottom.svg" alt="Stars icon" fill className="object-contain" />
           </div>
-          {pending ? 'Generating...' : 'Generate BG for 1 credit'}
+          Generate BG for 1 credit
         </Button>
       </form>
     </>

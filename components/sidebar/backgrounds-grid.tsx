@@ -1,8 +1,11 @@
 import { cn } from '@/lib/utils';
 import { CircularLoader } from './circular-loader';
-import { BackgroundsGridProps } from '@/types/sidebar-types';
+import { useSidebarStore } from '@/lib/stores/sidebar-store';
 
-export function BackgroundsGrid({ items, activeItemId, onSelect }: BackgroundsGridProps) {
+export function BackgroundsGrid() {
+  const items = useSidebarStore((s) => s.items);
+  const activeItemId = useSidebarStore((s) => s.activeItemId);
+  const setActiveItemId = useSidebarStore((s) => s.setActiveItemId);
   return (
     <section className="space-y-3 px-5 pb-4 mt-6">
       <h3 className="text-sm font-semibold">Your backgrounds</h3>
@@ -15,7 +18,7 @@ export function BackgroundsGrid({ items, activeItemId, onSelect }: BackgroundsGr
             <button
               key={item.id}
               type="button"
-              onClick={() => onSelect(item.id)}
+              onClick={() => setActiveItemId(() => item.id)}
               className={cn(
                 'bg-muted-foreground/10 relative h-50 w-full overflow-hidden rounded-2xl border-2 text-left transition-colors cursor-pointer',
                 isActive || item.loading ? 'border-black' : 'border-transparent hover:border-black',

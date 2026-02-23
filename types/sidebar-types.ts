@@ -9,14 +9,15 @@ export interface BackgroundItem {
   loading?: boolean;
 }
 
-export interface BackgroundsGridProps {
+export interface SidebarState {
   items: BackgroundItem[];
   activeItemId: string | null;
-  onSelect: (itemId: string) => void;
-}
+  promptState: BackgroundPromptState;
 
-export interface BackgroundPromptFormProps {
-  items: BackgroundItem[];
-  setItems: (items: (prev: BackgroundItem[]) => BackgroundItem[]) => void;
-  setActiveItemId: (id: (prev: string | null) => string | null) => void;
+  setItems: (updater: (prev: BackgroundItem[]) => BackgroundItem[]) => void;
+  setActiveItemId: (updater: (prev: string | null) => string | null) => void;
+  setPromptState: (state: BackgroundPromptState) => void;
+
+  addItem: (item: BackgroundItem) => void;
+  markItemLoaded: (itemId: string) => void;
 }
