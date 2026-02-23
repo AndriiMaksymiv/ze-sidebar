@@ -10,7 +10,7 @@ const BackgroundsGridEmpty = () => {
           <p className="text-muted-foreground mt-1">Give your AI avatar a custom backdrop to create a unique vibe.</p>
         </div>
         <div className="relative size-37 shrink-0">
-          <Image src="/images/replace_bg.png" alt="Replace background illustration" fill sizes="150px" className="object-contain rounded-xl" />
+          <Image src="/images/replace_bg.png" alt="Replace background illustration" fill sizes="150px" className="object-contain rounded-xl" loading="eager" />
         </div>
       </div>
     </DrawerFooter>
